@@ -2,36 +2,7 @@
 
 import sys
 
-# All arguments are in the range 0..3.
-def inrange(*args):
-    for a in args:
-        if a < 0 or a >= 4:
-            return False
-    return True
-
-# Number the pieces 0..3, the positions in the square 0..3.
-# Atom: piece p is in square s (location).
-def l(s, p):
-    assert inrange(s, p)
-    return 1 + s * 4 + p
-
-# Number the coordinates of the edges of each square 0..3.
-# Atom: piece in square s at edge e is n (match).
-def m(s, e, n):
-    assert inrange(s, e, n)
-    return l(3, 3) + 1 + s * 4**2 + e * 4 + n
-
-# Number the edges of each piece 0..3
-# Atom: piece p at edge e is n (value).
-def v(p, e, n):
-    assert inrange(p, e, n)
-    return m(3, 3, 3) + 1 + p * 4**2 + e * 4 + n
-
-# Number the rotations of each piece 0..3.
-# Atom: piece p has rotation k.
-def r(p, k):
-    assert inrange(p, k)
-    return v(3, 3, 3) + 1 + p * 4 + k
+from preds import *
 
 # List of clauses to output.
 clauses = []
@@ -49,6 +20,16 @@ for p in range(4):
     for s1 in range(4):
         for s2 in range(s1+1, 4):
             clause(-l(s1, p), -l(s2, p))
+
+# Every square has a piece.
+for s in range(4):
+    clause(*[l(s, p) for p in range(4)])
+
+# No square has more than one piece.
+for s in range(4):
+    for p1 in range(4):
+        for p2 in range(s1+1, 4):
+            clause(-l(s, p1), -l(s, p2))
 
 # Every piece is at some rotation.
 for p in range(4):
@@ -68,9 +49,9 @@ for s in range(4):
                 x = (4 - k + e) % 4
                 for n in range(4):
                     clause(-l(s, p), -r(p, k), -v(p, x, n), m(s, e, n))
-                    clause(-m(s, e, n), l(s, p))
-                    clause(-m(s, e, n), r(p, k))
-                    clause(-m(s, e, n), v(p, x, n))
+                    # clause(-m(s, e, n), l(s, p))
+                    # clause(-m(s, e, n), r(p, k))
+                    # clause(-m(s, e, n), v(p, x, n))
 
 # Edges must match.
 central_edges = [
