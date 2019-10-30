@@ -31,6 +31,10 @@ for s in range(4):
         for p2 in range(s1+1, 4):
             clause(-l(s, p1), -l(s, p2))
 
+# Piece 0 is in location 0 (remove rotational symmetry).
+clause(l(0, 0))
+
+
 # Every piece is at some rotation.
 for p in range(4):
     clause(*[r(p, k) for k in range(4)])
