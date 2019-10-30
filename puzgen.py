@@ -20,9 +20,16 @@ def piece(*e):
         else:
             p.append(e[i])
     assert not tofill
-    print(*p)
+    k = random.randrange(3)
+    q = [p[(i + k) % 4] for i in range(4)]
+    return q
 
-piece(etop, None, None, eleft)
-piece(None, None, etop, eright)
-piece(None, eright, ebottom, None)
-piece(ebottom, eleft, None, None)
+pieces = [
+    piece(etop, None, None, eleft),
+    piece(None, None, etop, eright),
+    piece(None, eright, ebottom, None),
+    piece(ebottom, eleft, None, None),
+]
+random.shuffle(pieces)
+for p in pieces:
+    print(*p)
