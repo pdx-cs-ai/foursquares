@@ -49,9 +49,13 @@ for s in range(4):
                 x = (4 - k + e) % 4
                 for n in range(4):
                     clause(-l(s, p), -r(p, k), -v(p, x, n), m(s, e, n))
-                    # clause(-m(s, e, n), l(s, p))
-                    # clause(-m(s, e, n), r(p, k))
-                    # clause(-m(s, e, n), v(p, x, n))
+
+# Edges have unique values.
+for s in range(4):
+    for e in range(4):
+        for n1 in range(4):
+            for n2 in range(n1+1, 4):
+                clause(-m(s, e, n1), -m(s, e, n2))
 
 # Edges must match.
 central_edges = [
