@@ -7,9 +7,12 @@ from preds import *
 # Load solution.
 lits = []
 with open(sys.argv[1], "r") as f:
-    next(f)
+    head = next(f)
+    assert head == "s SATISFIABLE\n"
     for row in f:
-        for val in row.split():
+        cols = row.split()
+        assert cols[0] == "v"
+        for val in cols[1:]:
             lits.append(int(val))
     assert lits.pop() == 0
     lits = set(lits)
@@ -62,4 +65,3 @@ print(soln[3], soln[2])
 print()
 pr(adjoin(render_piece(*soln[0]), render_piece(*soln[1])))
 pr(adjoin(render_piece(*soln[3]), render_piece(*soln[2])))
-
