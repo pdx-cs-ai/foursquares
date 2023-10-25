@@ -1,0 +1,37 @@
+Number the squares and corner positions clockwise from the
+northeast.
+
+3 0
+2 1
+
+squares = {0..3}   (northeast square is zero, then clockwise)
+pieces = {0..3}   (pieces are numbered by starting square)
+rotations = {0..3}  (rotations are counterclockwise)
+corners = {0..3}   (northeast corner is zero, then clockwise)
+
+L(s, p) is true iff piece p is at location s
+R(p, k) is true iff piece p is at rotation k
+C(p, c, k) is true if piece p has corner c northeast at rotation k
+
+Rotation composition function
+
+r(r1, r2) = (r1 + r2) mod 4
+
+* No piece is at more than one location.
+forall p . forall s1. forall s2 . s1 != s2 => not (L(s1, p) and L(s2, p))
+
+* No square has more than one piece.
+forall s . forall p1. forall p2 . p1 != p2 => not (L(s, p1) and L(s, p2))
+
+* Every piece is at some rotation.
+forall p . exists k . R(p, k)
+
+* No piece has more than one rotation.
+forall p . forall k1 . forall k2 . k1 != k2 => not (R(p, k1) and R(p, k2))
+
+* Every corner is unique.
+forall p . forall r . forall c1. forall c2 .
+    c1 != c2 => not (E(p, c1, r) and E(p, c2, r))
+
+* Corresponding corners must match.
+exists r0, r1, r2, r3 . …
